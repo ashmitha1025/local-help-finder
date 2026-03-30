@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body {
+  background: linear-gradient(-45deg, #0a192f, #112240);
+  color: white;
+  text-align: center;
+  padding-top: 80px;
+}
+
+.container {
+  background: rgba(255,255,255,0.08);
+  padding: 30px;
+  border-radius: 20px;
+  width: 300px;
+  margin: auto;
+}
+
+input, button {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h2>Add Service</h2>
+
+  <input id="name" placeholder="Name">
+  <input id="service" placeholder="Service">
+  <input id="pincode" placeholder="Pincode">
+
+  <button onclick="addService()">Add</button>
+</div>
+
+<canvas id="barChart"></canvas>
+<canvas id="pieChart"></canvas>
+
+<script>
+async function addService() {
+  await fetch("/api/add", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({
+      name: name.value,
+      service: service.value,
+      pincode: pincode.value
+    })
+  });
+
+  alert("Added!");
+  loadCharts();
+}
+
+async function loadCharts() {
+  const res = await fetch("/api/stats");
+  const data = await res.json();
+
+  const labels = data.map(d => d.service);
+  const values = data.map(d => d.count);
+
+  new Chart(barChart, {
+    type: "bar",
+    data: { labels, datasets: [{ data: values }] }
+  });
+
+  new Chart(pieChart, {
+    type: "pie",
+    data: { labels, datasets: [{ data: values }] }
+  });
+}
+
+loadCharts();
+</script>
+
+</body>
+</html>

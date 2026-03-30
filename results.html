@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body {
+  background: linear-gradient(-45deg, #0a192f, #112240);
+  color: white;
+  text-align: center;
+  padding-top: 100px;
+}
+
+.card {
+  background: rgba(255,255,255,0.08);
+  margin: 15px;
+  padding: 15px;
+  border-radius: 15px;
+}
+</style>
+</head>
+
+<body>
+
+<h2>Results</h2>
+<div id="results"></div>
+
+<script>
+async function load() {
+  const service = localStorage.getItem("service");
+  const pincode = localStorage.getItem("pincode");
+
+  const res = await fetch(`/api/help?service=${service}&pincode=${pincode}`);
+  const data = await res.json();
+
+  results.innerHTML = data.map(d => `
+    <div class="card">
+      <h3>${d.name}</h3>
+      <p>${d.service}</p>
+      <p>${d.distance} km away</p>
+    </div>
+  `).join("");
+}
+
+load();
+</script>
+
+</body>
+</html>

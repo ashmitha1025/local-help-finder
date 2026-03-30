@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body {
+  background: linear-gradient(-45deg, #0a192f, #112240);
+  color: white;
+  text-align: center;
+  padding-top: 120px;
+}
+
+input, button {
+  padding: 12px;
+  margin: 10px;
+  border-radius: 10px;
+  border: none;
+}
+
+button {
+  background: #64ffda;
+}
+</style>
+</head>
+
+<body>
+
+<h2>Search Services</h2>
+
+<input id="service" placeholder="Service">
+<input id="pincode" placeholder="Pincode">
+
+<button onclick="search()">Search</button>
+
+<script>
+function search() {
+  localStorage.setItem("service", service.value);
+  localStorage.setItem("pincode", pincode.value);
+  window.location.href = "results.html";
+}
+</script>
+
+</body>
+</html>
